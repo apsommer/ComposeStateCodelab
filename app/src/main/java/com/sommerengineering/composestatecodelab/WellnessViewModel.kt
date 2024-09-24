@@ -13,6 +13,6 @@ class WellnessViewModel : ViewModel() {
     val tasks: List<WellnessTask>
         get() = _tasks
 
-    
+
     fun remove(item: WellnessTask) { _tasks.remove(item) }
 }
