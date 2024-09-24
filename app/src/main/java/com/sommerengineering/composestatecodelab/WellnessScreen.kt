@@ -2,13 +2,16 @@ package com.sommerengineering.composestatecodelab
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun WellnessScreen(modifier: Modifier = Modifier) {
+fun WellnessScreen(
+    modifier: Modifier = Modifier,
+
+    // activity level viewmodel, exists outside the activity scope and will persist configuration changes
+    wellnessViewModel: WellnessViewModel = viewModel()
+) {
     Column(modifier) {
         StatefulCounter()
 
@@ -23,13 +26,10 @@ fun WellnessScreen(modifier: Modifier = Modifier) {
         // rememberSaveable will not work here because of mutable state list
         // alternate saving mechanism required
 
-        val list = remember {
-            getWellnessTasks().toMutableStateList()
-        }
-
         WellnessTaskList(
-            list = list,
-            onCloseTask = { task -> list.remove(task) }
+            list = wellnessViewModel.tasks,
+            onCheckedTask = { task, isChecked -> wellnessViewModel.changeTaskChecked(task, isChecked) },
+            onCloseTask = { task -> wellnessViewModel.remove(task) }
         )
     }
 }

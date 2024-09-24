@@ -7,7 +7,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun WellnessTaskList(
-    list: MutableList<WellnessTask>,
+    list: List<WellnessTask>,
+    onCheckedTask: (WellnessTask, Boolean) -> Unit,
     onCloseTask: (WellnessTask) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -20,6 +21,8 @@ fun WellnessTaskList(
             key = { task -> task.id }) { task ->
             WellnessTaskItem(
                 taskName = task.label,
+                isChecked = task.isChecked,
+                onCheckedChange = { isChecked -> onCheckedTask(task, isChecked) },
                 onClose = { onCloseTask(task) })
         }
     }
